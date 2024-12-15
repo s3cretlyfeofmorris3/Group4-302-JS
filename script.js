@@ -16,3 +16,27 @@ form.addEventListener('submit', async (e) => {
     }
   }
 });
+
+async function fetchWeather(city) {
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+  );
+  if (!response.ok) throw new Error('City not found');
+  const data = await response.json();
+  displayWeather(data);
+}
+
+// Display current weather data
+function displayWeather(data) {
+  const cityName = document.getElementById('city-name');
+  const weatherIcon = document.getElementById('weather-icon');
+  const temperature = document.getElementById('temperature');
+  const description = document.getElementById('description');
+
+  cityName.textContent = `${data.name}, ${data.sys.country}`;
+  weatherIcon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  temperature.textContent = `Temperature: ${data.main.temp}°C`;
+  description.textContent = `Weather: ${data.weather[0].description}`;
+
+  weatherInfo.classList.remove('hidden');
+}
