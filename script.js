@@ -40,3 +40,24 @@ function displayWeather(data) {
 
   weatherInfo.classList.remove('hidden');
 }
+
+function displayForecast(data) {
+  const forecastDiv = document.getElementById('forecast');
+  forecastDiv.innerHTML = ''; // Clear previous forecast
+
+  // Filter to get weather data at noon for the next 5 days
+  const filteredData = data.list.filter((item) => item.dt_txt.includes('12:00:00'));
+
+  filteredData.forEach((day) => {
+    const date = new Date(day.dt_txt);
+    const dayDiv = document.createElement('div');
+    dayDiv.innerHTML = `
+      <p>${date.toDateString()}</p>
+      <img src="https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png" alt="${day.weather[0].description}">
+      <p>Temp: ${day.main.temp}°C</p>
+    `;
+    forecastDiv.appendChild(dayDiv);
+  });
+
+  forecastInfo.classList.remove('hidden');
+
